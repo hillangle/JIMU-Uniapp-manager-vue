@@ -20,103 +20,41 @@ const routes = [
                 /* webpackChunkName: "dashboard" */
                 "../views/Dashboard.vue")
             }, {
-                path: "/table",
-                name: "basetable",
+                path: "/userManager",
+                name: "user",
                 meta: {
-                    title: '表格'
+                    title: '用户管理'
                 },
                 component: () => import (
                 /* webpackChunkName: "table" */
-                "../views/BaseTable.vue")
+                "../views/UserManager.vue")
             }, {
-                path: "/charts",
-                name: "basecharts",
+                path: "/tendencyManager",
+                name: "tendency",
                 meta: {
-                    title: '图表'
+                    title: '动态管理'
                 },
                 component: () => import (
                 /* webpackChunkName: "charts" */
-                "../views/BaseCharts.vue")
+                "../views/TendencyManager.vue")
             }, {
-                path: "/form",
-                name: "baseform",
+                path: "/socailManager",
+                name: "social",
                 meta: {
-                    title: '表单'
+                    title: '平台管理'
                 },
                 component: () => import (
                 /* webpackChunkName: "form" */
-                "../views/BaseForm.vue")
+                "../views/SocailManager.vue")
             }, {
-                path: "/tabs",
-                name: "tabs",
+                path: "/groupManager",
+                name: "group",
                 meta: {
-                    title: 'tab标签'
+                    title: '兴趣小组管理'
                 },
                 component: () => import (
                 /* webpackChunkName: "tabs" */
-                "../views/Tabs.vue")
-            }, {
-                path: "/donate",
-                name: "donate",
-                meta: {
-                    title: '鼓励作者'
-                },
-                component: () => import (
-                /* webpackChunkName: "donate" */
-                "../views/Donate.vue")
-            }, {
-                path: "/permission",
-                name: "permission",
-                meta: {
-                    title: '权限管理',
-                    permission: true
-                },
-                component: () => import (
-                /* webpackChunkName: "permission" */
-                "../views/Permission.vue")
-            }, {
-                path: "/i18n",
-                name: "i18n",
-                meta: {
-                    title: '国际化语言'
-                },
-                component: () => import (
-                /* webpackChunkName: "i18n" */
-                "../views/I18n.vue")
-            }, {
-                path: "/upload",
-                name: "upload",
-                meta: {
-                    title: '上传插件'
-                },
-                component: () => import (
-                /* webpackChunkName: "upload" */
-                "../views/Upload.vue")
-            }, {
-                path: "/icon",
-                name: "icon",
-                meta: {
-                    title: '自定义图标'
-                },
-                component: () => import (
-                /* webpackChunkName: "icon" */
-                "../views/Icon.vue")
-            }, {
-                path: '/404',
-                name: '404',
-                meta: {
-                    title: '找不到页面'
-                },
-                component: () => import (/* webpackChunkName: "404" */
-                '../views/404.vue')
-            }, {
-                path: '/403',
-                name: '403',
-                meta: {
-                    title: '没有权限'
-                },
-                component: () => import (/* webpackChunkName: "403" */
-                '../views/403.vue')
+                "../views/GroupManager.vue")
             }
         ]
     }, {

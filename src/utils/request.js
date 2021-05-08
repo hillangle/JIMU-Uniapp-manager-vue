@@ -9,8 +9,27 @@ const service = axios.create({
 
 service.interceptors.request.use(
     config => {
+        // config.headers.post['Content-Type'] = 'application/json';   //主要是这里
+        if (localStorage.getItem("token")) {
+            config.headers.Authorization = "Bearer " + localStorage.getItem("token");
+        }
+        //     if (config.method === 'post') {
+        //         var parm = {
+        //             data : config.data
+        //         }
+        //         config.data = JSON.stringify(parm)
+        //     }
+        //     if (config.method === 'get') {
+        //         config.params = {
+        //             ...config.params,
+        //         }
+        //     }
+        // }else{
+        //     if (config.method === 'post') {
+        //         config.data = JSON.stringify({...config.data})
+        //     }
         return config;
-    },
+        },
     error => {
         console.log(error);
         return Promise.reject();

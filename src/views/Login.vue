@@ -1,10 +1,10 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">后台管理系统</div>
+            <div class="ms-title">基沐社交平台后台管理系统</div>
             <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
-                    <el-input v-model="param.username" placeholder="username">
+                    <el-input v-model="param.username" placeholder="username" ref="username">
                         <template #prepend>
                             <el-button icon="el-icon-user"></el-button>
                         </template>
@@ -16,6 +16,7 @@
                         placeholder="password"
                         v-model="param.password"
                         @keyup.enter="submitForm()"
+                        ref="password"
                     >
                         <template #prepend>
                             <el-button icon="el-icon-lock"></el-button>
@@ -32,12 +33,16 @@
 </template>
 
 <script>
+import axios from "axios";
+
+import { baseUrl } from "../common/common.js";
+
 export default {
     data() {
         return {
             param: {
-                username: "admin",
-                password: "123123"
+                username: "",
+                password: ""
             },
             rules: {
                 username: [
@@ -56,9 +61,24 @@ export default {
         submitForm() {
             this.$refs.login.validate(valid => {
                 if (valid) {
-                    this.$message.success("登录成功");
-                    localStorage.setItem("ms_username", this.param.username);
-                    this.$router.push("/");
+                  let username = this.param.username;
+                  let password =  this.param.password;
+                  axios.post(baseUrl+'auth/login',{"account":username,"password":password,"userRole":"SYSUSER"})
+                      .then(function (data){
+                  //       this.$message.success("登录成功");
+                        if(data.data.token) {
+                          localStorage.setItem("ms_username", username);
+                          localStorage.setItem("token", data.data.token);
+                          this.$router.push("/");
+                        }else{
+                          this.$message.error("登录失败");
+                        }
+                      }.bind(this))
+                      .catch(function (error){
+                        console.log(error);
+                        this.$message.error("登录失败");
+                      }.bind(this));
+
                 } else {
                     this.$message.error("请输入账号和密码");
                     return false;

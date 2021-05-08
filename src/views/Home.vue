@@ -22,6 +22,17 @@ import vHeader from "../components/Header";
 import vSidebar from "../components/Sidebar";
 import vTags from "../components/Tags.vue";
 export default {
+    mounted: function() {
+      this.getToken();
+    },
+    methods: {
+      getToken:function(){
+        let token = localStorage.getItem("token");
+        if(!token){
+          this.$router.push("/login");
+        }
+      }
+    },
     components: {
         vHeader,
         vSidebar,

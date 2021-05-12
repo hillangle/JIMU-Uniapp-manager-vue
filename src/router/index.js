@@ -4,7 +4,7 @@ import Home from "../views/Home.vue";
 const routes = [
     {
         path: '/',
-        redirect: '/dashboard'
+        redirect: '/login'
     }, {
         path: "/",
         name: "Home",
@@ -38,14 +38,14 @@ const routes = [
                 /* webpackChunkName: "charts" */
                 "../views/TendencyManager.vue")
             }, {
-                path: "/socailManager",
+                path: "/socialManager",
                 name: "social",
                 meta: {
                     title: '平台管理'
                 },
                 component: () => import (
                 /* webpackChunkName: "form" */
-                "../views/SocailManager.vue")
+                "../views/SocialManager.vue")
             }, {
                 path: "/groupManager",
                 name: "group",

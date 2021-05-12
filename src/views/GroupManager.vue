@@ -10,7 +10,7 @@
         <div class="container">
             <div class="handle-box">
                 <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                  <el-button type="primary" icon="el-icon-search" @click="handleadd">新增</el-button>
+                  <el-button type="primary" icon="el-icon-search" @click="handleAdd">新增</el-button>
                 </el-form>
             </div>
             <el-table
@@ -22,8 +22,8 @@
                 v-loading.fullscreen.lock="fullscreenLoading"
                 @selection-change="handleSelectionChange"
             >
-                <el-table-column prop="unid" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column prop="name" label="兴趣小组名称"></el-table-column>
+                <el-table-column prop="index" label="ID" width="55" align="center"></el-table-column>
+                <el-table-column prop="name" label="兴趣小组名称" align="center"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button
@@ -52,7 +52,7 @@
 
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" v-model="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="70px">
+            <el-form ref="form" :model="form" label-width="100px">
                 <el-form-item label="兴趣小组名称">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
@@ -70,37 +70,18 @@
 <script>
 import { getGroupList, updateGroupStatus, addGroup } from "../api/GroupManager";
 export default {
-    name: "basetable",
+    name: "group",
     data() {
         return {
           fullscreenLoading: false,
-          options: [{
-            value: '0',
-            label: '图片'
-          }, {
-            value: '1',
-            label: '链接'
-          }],
           value: '',
-          query: {
-            userName: "",
-            telphone: "",
-            content: "",
-            offset: 1,
-            limit: 10
-          },
+          query: { status:"", offset: 1, limit: 10 },
           tableData: [],
-          multipleSelection: [],
-          delList: [],
           editVisible: false,
           pageTotal: 0,
-          form: {},
-          idx: -1,
+          form: {name:"",status:""},
           id: -1,
-          updateQuery: {
-            unid: "",
-            status: ""
-          },
+          updateQuery: { unid: "", status: "" }
         };
     },
     created() {
@@ -109,8 +90,12 @@ export default {
     methods: {
         getData() {
           this.fullscreenLoading = true;
+          this.query.status = "0"
           getGroupList(this.query).then(res => {
                 console.log(res);
+                res.rows.forEach((item,index)=>{
+                  item.index = index +1;
+                })
                 this.tableData = res.rows;
                 this.pageTotal = res.total || 0;
                 this.offset = res.offset || 1;
@@ -120,29 +105,9 @@ export default {
         handleSearch() {
             this.getData();
         },
-        handleStatusChange(index,status,unid) {
-          let msg = "确定要隐藏吗？";
-          if(status == '1'){
-            msg = "确认要显示吗？";
-          }
-            this.$confirm(msg, "提示", {
-                type: "warning"
-            })
-            .then(() => {
-              if(status == '0') {
-                this.updateQuery.status = '1';
-              }else{
-                this.updateQuery.status = '0'
-              }
-              this.updateQuery.unid = unid;
-              updateGroupStatus(this.updateQuery);
-              this.getData();
-            })
-            .catch(() => {});
+        handleAdd() {
+          this.editVisible = true;
         },
-      handleAdd() {
-        this.editVisible = true;
-      },
         // 编辑操作
         handleEdit(index, row) {
             this.idx = index;
@@ -153,21 +118,23 @@ export default {
         // 保存编辑
         saveEdit() {
             this.editVisible = false;
+            this.form.status = "0";
             addGroup(this.form).then(() => {
-              this.$message.success(`修改第 ${this.idx + 1} 行成功`);
-              this.$set(this.tableData, this.idx, this.form);
+              this.getData();
             })
         },
-        handleDelete(index) {
+        handleDelete(index,row) {
           // 二次确认删除
           this.$confirm("确定要删除吗？", "提示", {
             type: "warning"
-          })
-              .then(() => {
-                this.$message.success("删除成功");
-                this.tableData.splice(index, 1);
+          }).then(() => {
+              this.updateQuery.unid = row.unid;
+              this.updateQuery.status = "1";
+              updateGroupStatus(this.updateQuery).then(() => {
+                  this.$message.success("删除成功");
+                  this.tableData.splice(index, 1);
               })
-              .catch(() => {});
+          }).catch(() => {});
         },
         // 分页导航
         handlePageChange(val) {

@@ -63,13 +63,13 @@ export default {
                 if (valid) {
                   let username = this.param.username;
                   let password =  this.param.password;
-                  axios.post(baseUrl+'auth/login',{"account":username,"password":password,"userRole":"SYSUSER"})
+                  axios.post(baseUrl+'auth/login',{"account":username,"password":password,"userRole":"ROLE_SYSUSER"})
                       .then(function (data){
                   //       this.$message.success("登录成功");
                         if(data.data.token) {
                           localStorage.setItem("ms_username", username);
                           localStorage.setItem("token", data.data.token);
-                          this.$router.push("/");
+                          this.$router.push("/dashboard");
                         }else{
                           this.$message.error("登录失败");
                         }

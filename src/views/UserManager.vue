@@ -91,7 +91,7 @@
 <script>
 import { getUserList, updateDataStatus } from "../api/UserManager";
 export default {
-    name: "basetable",
+    name: "user",
     data() {
         return {
           fullscreenLoading: false,
@@ -115,13 +115,8 @@ export default {
             limit: 10
           },
           tableData: [],
-          multipleSelection: [],
-          delList: [],
           editVisible: false,
           pageTotal: 0,
-          form: {},
-          idx: -1,
-          id: -1,
           updateQuery: {
             unid: "",
             status: ""

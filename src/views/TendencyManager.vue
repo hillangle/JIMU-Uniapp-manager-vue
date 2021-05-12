@@ -95,7 +95,7 @@
 <script>
 import { getTendencyList, updateTendencyStatus } from "../api/TendencyManager";
 export default {
-    name: "basetable",
+    name: "tendency",
     data() {
         return {
           fullscreenLoading: false,

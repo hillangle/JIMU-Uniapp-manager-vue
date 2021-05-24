@@ -79,6 +79,11 @@ export default {
                     icon: "el-icon-lx-emoji",
                     index: "groupManager",
                     title: "兴趣小组管理"
+                },
+                {
+                  icon: "el-icon-lx-emoji",
+                  index: "activityManager",
+                  title: "活动管理"
                 }
             ]
         };

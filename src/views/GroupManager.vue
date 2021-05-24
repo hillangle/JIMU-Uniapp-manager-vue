@@ -56,6 +56,21 @@
                 <el-form-item label="兴趣小组名称">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
+                <el-form-item label="兴趣小组图标">
+                  <div class="crop-demo">
+                    <img :src="cropImg" class="pre-img" />
+                    <div class="crop-demo-btn">
+                      选择图片
+                      <input
+                          class="crop-input"
+                          type="file"
+                          name="image"
+                          accept="image/*"
+                          @change="setImage"
+                      />
+                    </div>
+                  </div>
+                </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
@@ -79,9 +94,10 @@ export default {
           tableData: [],
           editVisible: false,
           pageTotal: 0,
-          form: {name:"",status:""},
+          form: {name:"",status:"", img: ""},
           id: -1,
-          updateQuery: { unid: "", status: "" }
+          updateQuery: { unid: "", status: "" },
+          cropImg: ""
         };
     },
     created() {
@@ -119,6 +135,7 @@ export default {
         saveEdit() {
             this.editVisible = false;
             this.form.status = "0";
+            this.form.img = this.cropImg;
             addGroup(this.form).then(() => {
               this.getData();
             })
@@ -140,6 +157,17 @@ export default {
         handlePageChange(val) {
             this.$set(this.query, "pageIndex", val);
             this.getData();
+        },
+        setImage(e) {
+          const file = e.target.files[0];
+          if (!file.type.includes("image/")) {
+            return;
+          }
+          const reader = new FileReader();
+            reader.onload = event => {
+            this.cropImg = event.target.result;
+          };
+          reader.readAsDataURL(file);
         }
     }
 };

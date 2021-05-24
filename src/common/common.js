@@ -1,1 +1,0 @@
-export var baseUrl="http://47.111.173.172:8001/";

@@ -16,45 +16,42 @@ const routes = [
                 meta: {
                     title: '系统首页'
                 },
-                component: () => import (
-                /* webpackChunkName: "dashboard" */
-                "../views/Dashboard.vue")
+                component: () => import ("../views/Dashboard.vue")
             }, {
                 path: "/userManager",
                 name: "user",
                 meta: {
                     title: '用户管理'
                 },
-                component: () => import (
-                /* webpackChunkName: "table" */
-                "../views/UserManager.vue")
+                component: () => import ("../views/UserManager.vue")
             }, {
                 path: "/tendencyManager",
                 name: "tendency",
                 meta: {
                     title: '动态管理'
                 },
-                component: () => import (
-                /* webpackChunkName: "charts" */
-                "../views/TendencyManager.vue")
+                component: () => import ("../views/TendencyManager.vue")
             }, {
                 path: "/socialManager",
                 name: "social",
                 meta: {
                     title: '平台管理'
                 },
-                component: () => import (
-                /* webpackChunkName: "form" */
-                "../views/SocialManager.vue")
+                component: () => import ("../views/SocialManager.vue")
             }, {
                 path: "/groupManager",
                 name: "group",
                 meta: {
                     title: '兴趣小组管理'
                 },
-                component: () => import (
-                /* webpackChunkName: "tabs" */
-                "../views/GroupManager.vue")
+                component: () => import ("../views/GroupManager.vue")
+            }, {
+                path: "/activityManager",
+                name: "activity",
+                meta: {
+                    title: '活动管理'
+                },
+                component: () => import ("../views/ActivityManager.vue")
             }
         ]
     }, {

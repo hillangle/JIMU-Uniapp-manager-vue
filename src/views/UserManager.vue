@@ -38,14 +38,18 @@
                 v-loading.fullscreen.lock="fullscreenLoading"
                 @selection-change="handleSelectionChange"
             >
-                <el-table-column prop="unid" label="ID" width="55" align="center"></el-table-column>
+              <el-table-column  label="ID" width="55" align="center">
+                <template #default="scope">
+                  {{ scope.$index + 1 }}
+                </template>
+              </el-table-column>
                 <el-table-column prop="userName" label="昵称"></el-table-column>
                 <el-table-column label="性别" align="center">
                     <template #default="scope">
                       <el-tag
                           :type="scope.row.sex=='0' ? 'error' : scope.row.sex === '1' ? 'success' : scope.row.sex === '2' ? 'warning' : ''"
                       >
-                        {{ scope.row.sex === '0' ? '未知' : scope.row.sex === '1' ? '男' : scope.row.sex === '2' ? '女' : '' }}
+                        {{ scope.row.sex === '0' ||  scope.row.sex === null ? '未知' : scope.row.sex === '1' ? '男' : scope.row.sex === '2' ? '女' : '' }}
                       </el-tag>
                     </template>
                 </el-table-column>

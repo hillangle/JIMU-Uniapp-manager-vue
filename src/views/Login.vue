@@ -63,7 +63,7 @@ export default {
                     this.param.userRole = "ROLE_SYSUSER";
                     login(this.param) .then(data => {
                         if(data.token) {
-                            localStorage.setItem("ms_username", this.param.username);
+                            localStorage.setItem("ms_username", this.param.account);
                             localStorage.setItem("token", data.token);
                             this.$router.push("/dashboard");
                         }else{

@@ -31,9 +31,21 @@
                 v-loading.fullscreen.lock="fullscreenLoading"
                 @selection-change="handleSelectionChange"
             >
-                <el-table-column prop="unid" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column prop="userName" label="昵称"></el-table-column>
-                <el-table-column prop="telphone" label="手机号"></el-table-column>
+                <el-table-column  label="ID" width="55" align="center">
+                  <template #default="scope">
+                    {{ scope.$index + 1 }}
+                  </template>
+                </el-table-column>
+                <el-table-column prop="userName" label="昵称">
+                  <template #default="scope">
+                    {{ scope.row.user.userName}}
+                  </template>
+                </el-table-column>
+                <el-table-column prop="telphone" label="手机号">
+                  <template #default="scope">
+                    {{ scope.row.user.telphone}}
+                  </template>
+                </el-table-column>
                 <el-table-column prop="group_name" label="兴趣小组"></el-table-column>
                 <el-table-column prop="content" label="内容"></el-table-column>
                 <el-table-column label="状态" align="center">
@@ -50,8 +62,9 @@
                     <template #default="scope">
                         <el-button
                             type="text"
-                            @click="handleEdit(scope.$index, scope.row)"
-                        >详情</el-button>
+                            @click="detail(scope.$index, scope.row.unid)">
+                          详情
+                        </el-button>
                         <el-button
                             type="text"
                             :class="scope.row.status === '0' ? 'red' : 'green'"
@@ -71,28 +84,20 @@
                 ></el-pagination>
             </div>
         </div>
-
-        <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" v-model="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="70px">
-                <el-form-item label="用户名">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
-                </el-form-item>
-            </el-form>
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="editVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveEdit">确 定</el-button>
-                </span>
-            </template>
+        <!-- 详情弹出框 -->
+        <el-dialog title="动态详情" v-model="detailVisible" width="80%" :before-close="handleDialogClose">
+          <detail :unid ="unid" ref="detail"></detail>
+          <template #footer>
+                  <span class="dialog-footer">
+                      <el-button @click="cancel">取 消</el-button>
+                  </span>
+          </template>
         </el-dialog>
     </div>
 </template>
 
 <script>
+import $detail from "../views/TendencyDetail";
 import { getTendencyList, updateTendencyStatus } from "../api/TendencyManager";
 export default {
     name: "tendency",
@@ -120,7 +125,7 @@ export default {
           tableData: [],
           multipleSelection: [],
           delList: [],
-          editVisible: false,
+          detailVisible: false,
           pageTotal: 0,
           form: {},
           idx: -1,
@@ -129,7 +134,11 @@ export default {
             unid: "",
             status: ""
           },
+          unid:""
         };
+    },
+    components: {
+      "detail" : $detail
     },
     created() {
         this.getData();
@@ -169,16 +178,19 @@ export default {
             .catch(() => {});
         },
         // 编辑操作
-        handleEdit(index, row) {
+        detail(index, row) {
             this.idx = index;
-            this.form = row;
-            this.editVisible = true;
+            this.unid = row;
+            this.detailVisible = true;
+            this.$refs.detail.getDetail(row);
         },
-        // 保存编辑
-        saveEdit() {
-            this.editVisible = false;
-            this.$message.success(`修改第 ${this.idx + 1} 行成功`);
-            this.$set(this.tableData, this.idx, this.form);
+        cancel(){
+            this.$refs.detail.clearDialog();
+            this.detailVisible = false;
+        },
+        handleDialogClose(){
+          this.$refs.detail.clearDialog();
+          this.detailVisible = false;
         },
         // 分页导航
         handlePageChange(val) {
@@ -221,4 +233,5 @@ export default {
     width: 40px;
     height: 40px;
 }
+
 </style>

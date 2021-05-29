@@ -30,7 +30,7 @@ const routes = [
                 meta: {
                     title: '动态管理'
                 },
-                component: () => import ("../views/TendencyManager.vue")
+                component: () => import ("../views/TendencyManager.vue"),
             }, {
                 path: "/socialManager",
                 name: "social",
@@ -52,6 +52,13 @@ const routes = [
                     title: '活动管理'
                 },
                 component: () => import ("../views/ActivityManager.vue")
+            }, {
+                path: "/activationCodeManager",
+                name: "activationCode",
+                meta: {
+                    title: '激活码管理'
+                },
+                component: () => import ("../views/ActivationCodeManager.vue")
             }
         ]
     }, {
@@ -61,7 +68,6 @@ const routes = [
             title: '登录'
         },
         component: () => import (
-        /* webpackChunkName: "login" */
         "../views/Login.vue")
     }
 ];
@@ -72,7 +78,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    document.title = `${to.meta.title} | vue-manage-system`;
+    document.title = `${to.meta.title}`;
     const role = localStorage.getItem('ms_username');
     if (!role && to.path !== '/login') {
         next('/login');

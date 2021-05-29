@@ -66,7 +66,7 @@
 
         <!-- 新增弹出框 -->
         <el-dialog title="编辑" v-model="addVisible" width="30%">
-            <el-form ref="addForm" :model="form" label-width="70px">
+            <el-form ref="addForm" :model="form" label-width="70px" :rules="rule">
               <el-form-item label="封面">
                 <div class="crop-demo">
                   <img :src="form.img" class="pre-img" />
@@ -82,16 +82,16 @@
                   </div>
                 </div>
               </el-form-item>
-              <el-form-item label="活动名称">
+              <el-form-item label="活动名称" prop="name">
                 <el-input v-model="form.name"></el-input>
               </el-form-item>
-              <el-form-item label="活动详情">
+              <el-form-item label="活动详情" prop="content">
                 <el-input type="textarea" v-model="form.content"></el-input>
               </el-form-item>
-              <el-form-item label="活动地址">
+              <el-form-item label="活动地址" prop="address">
                 <el-input type="textarea" v-model="form.address"></el-input>
               </el-form-item>
-              <el-form-item label="活动时间">
+              <el-form-item label="活动时间" prop="activeTime">
                 <el-date-picker
                     v-model="form.activeTime"
                     type="datetime"
@@ -101,7 +101,7 @@
                     :picker-options="pickerOptions1">
                 </el-date-picker>
               </el-form-item>
-              <el-form-item label="报名开始">
+              <el-form-item label="报名开始" prop="startTime">
                 <el-date-picker
                     v-model="form.startTime"
                     type="datetime"
@@ -111,7 +111,7 @@
                     :picker-options="pickerOptions1">
                 </el-date-picker>
               </el-form-item>
-              <el-form-item label="结束日期">
+              <el-form-item label="结束日期" prop="endTime">
                 <el-date-picker
                     v-model="form.endTime"
                     type="datetime"
@@ -132,7 +132,7 @@
 
       <!-- 编辑弹出框 -->
       <el-dialog title="编辑" v-model="editVisible" width="30%">
-        <el-form ref="editForm" :model="form" label-width="70px">
+        <el-form ref="editForm" :model="form" label-width="70px" :rules="rule">
           <el-form-item label="封面">
             <div class="crop-demo">
               <img :src="form.img" class="pre-img" />
@@ -148,16 +148,16 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="活动名称">
+          <el-form-item label="活动名称" prop="name">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
-          <el-form-item label="活动详情">
-            <el-input type="textarea" v-model="form.name"></el-input>
+          <el-form-item label="活动详情" prop="content">
+            <el-input type="textarea" v-model="form.content"></el-input>
           </el-form-item>
-          <el-form-item label="活动地址">
-            <el-input type="textarea" v-model="form.name"></el-input>
+          <el-form-item label="活动地址" prop="address">
+            <el-input type="textarea" v-model="form.address"></el-input>
           </el-form-item>
-          <el-form-item label="活动时间">
+          <el-form-item label="活动时间" prop="activeTime">
               <el-date-picker
                   v-model="form.activeTime"
                   type="datetime"
@@ -167,7 +167,7 @@
                   :picker-options="pickerOptions1">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="报名开始">
+            <el-form-item label="报名开始" prop="startTime">
               <el-date-picker
                   v-model="form.startTime"
                   type="datetime"
@@ -177,7 +177,7 @@
                   :picker-options="pickerOptions1">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="结束日期">
+            <el-form-item label="结束日期" prop="endTime">
               <el-date-picker
                   v-model="form.endTime"
                   type="datetime"
@@ -206,6 +206,26 @@ export default {
     data() {
         return {
             fullscreenLoading: false,
+            rule: {
+              name:[
+                {required: true, message: '请输入活动名称', trigger: 'blur' }
+              ],
+              content:[
+                {required: true, message: '请输入活动详情', trigger: 'blur' }
+              ],
+              address:[
+                {required: true, message: '请输入活动地址', trigger: 'blur' }
+              ],
+              activeTime:[
+                {required: true, message: '请选择活动时间', trigger: 'blur' }
+              ],
+              startTime:[
+                {required: true, message: '请选择报名开始时间', trigger: 'blur' }
+              ],
+              endTime:[
+                {required: true, message: '请选报名结束动时间', trigger: 'blur' }
+              ]
+            },
             value: '',
             query: { userName: "", telphone: "", content: "", offset: 1, limit: 10, status:"" },
             tableData: [],
@@ -278,31 +298,45 @@ export default {
       },
       // 保存编辑
       saveEdit() {
-        this.addVisible = false;
-        this.form.status = '0';
-        this.form.activeTime = this.rTime(this.form.activeTime);
-        this.form.startTime = this.rTime(this.form.startTime);
-        this.form.endTime = this.rTime(this.form.endTime);
-        this.form.img = this.form.img.replace("data:image/png;base64,", "");
-        addActivity(this.form).then(() => {
-          this.getData();
-          this.form = {};
+        this.$refs.addForm.validate((valid) => {
+          if (valid) {
+            this.addVisible = false;
+            this.form.status = '0';
+            this.form.activeTime = this.rTime(this.form.activeTime);
+            this.form.startTime = this.rTime(this.form.startTime);
+            this.form.endTime = this.rTime(this.form.endTime);
+            this.form.img = this.form.img.replace("data:image/png;base64,", "");
+            addActivity(this.form).then(() => {
+              this.getData();
+              this.form = {};
+            })
+            this.$refs.addForm.resetFields();
+          }else{
+            this.$message.error("请检查填写内容");
+            return false;
+          }
         })
-        this.$refs.addForm.resetFields();
       },
       // 保存编辑
       updateEdit() {
-        this.editVisible = false;
-        this.form.status = '0';
-        this.form.activeTime = this.rTime(this.form.activeTime);
-        this.form.startTime = this.rTime(this.form.startTime);
-        this.form.endTime = this.rTime(this.form.endTime);
-        this.form.img = this.form.img.replace("data:image/png;base64,", "");
-        updateActivityStatus(this.form).then(() => {
-          this.getData();
-          this.form = {};
+        this.$refs.editForm.validate((valid) => {
+          if (valid) {
+            this.editVisible = false;
+            this.form.status = '0';
+            this.form.activeTime = this.rTime(this.form.activeTime);
+            this.form.startTime = this.rTime(this.form.startTime);
+            this.form.endTime = this.rTime(this.form.endTime);
+            this.form.img = this.form.img.replace("data:image/png;base64,", "");
+            updateActivityStatus(this.form).then(() => {
+              this.getData();
+              this.form = {};
+            })
+            this.$refs.editForm.resetFields();
+          } else {
+            this.$message.error("请检查填写内容");
+            return false;
+          }
         })
-        this.$refs.editForm.resetFields();
       },
       handleDelete(index, row) {
         // 二次确认删除

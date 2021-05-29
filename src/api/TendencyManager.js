@@ -15,3 +15,11 @@ export const updateTendencyStatus = query => {
         params: query
     });
 };
+
+export const getTendencyInfo = query => {
+    return request({
+        url: 'sys/tendency/getTendencyList',
+        method: 'get',
+        params: query
+    });
+};

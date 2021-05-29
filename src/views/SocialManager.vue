@@ -10,7 +10,7 @@
         <div class="container">
             <div class="handle-box">
                 <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                  <el-button type="primary" icon="el-icon-search" @click="handleAdd">新增</el-button>
+                  <el-button type="primary" icon="el-icon-add" @click="handleAdd">新增</el-button>
                 </el-form>
             </div>
             <el-table
@@ -64,7 +64,7 @@
         </div>
 
         <!-- 新增弹出框 -->
-        <el-dialog title="编辑" v-model="addVisible" width="30%">
+        <el-dialog title="新增" v-model="addVisible" width="30%">
             <el-form ref="addForm" :model="form" label-width="70px">
                 <el-form-item label="平台名称">
                     <el-input v-model="form.name"></el-input>

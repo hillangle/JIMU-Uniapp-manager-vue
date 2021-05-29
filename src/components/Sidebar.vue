@@ -84,6 +84,11 @@ export default {
                   icon: "el-icon-lx-emoji",
                   index: "activityManager",
                   title: "活动管理"
+                },
+                {
+                  icon: "el-icon-lx-emoji",
+                  index: "activationCodeManager",
+                  title: "激活码管理"
                 }
             ]
         };

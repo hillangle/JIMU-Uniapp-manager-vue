@@ -64,7 +64,7 @@
         </div>
 
         <!-- 新增弹出框 -->
-        <el-dialog title="新增" v-model="addVisible" width="30%">
+        <el-dialog title="新增" v-model="addVisible" width="30%" :before-close="handleDialogClose">
             <el-form ref="addForm" :model="form" label-width="70px">
                 <el-form-item label="平台名称">
                     <el-input v-model="form.name"></el-input>
@@ -104,7 +104,7 @@
         </el-dialog>
 
       <!-- 编辑弹出框 -->
-      <el-dialog title="编辑" v-model="editVisible" width="30%">
+      <el-dialog title="编辑" v-model="editVisible" width="30%" :before-close="handleDialogClose">
         <el-form ref="form" :model="form" label-width="70px">
           <el-form-item label="平台名称">
             <el-input v-model="form.name"></el-input>
@@ -273,8 +273,13 @@ export default {
             this.cropImg = event.target.result;
           };
           reader.readAsDataURL(file);
+        },
+        handleDialogClose(){
+          this.form = {};
+          this.addVisible = false;
+          this.editVisible = false;
         }
-      }
+    }
 };
 </script>
 

@@ -51,7 +51,7 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" v-model="editVisible" width="30%">
+        <el-dialog title="编辑" v-model="editVisible" width="30%" :before-close="handleDialogClose">
             <el-form ref="form" :model="form" label-width="100px">
                 <el-form-item label="兴趣小组名称">
                     <el-input v-model="form.name"></el-input>
@@ -75,7 +75,7 @@
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="editVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveEdit">确 定</el-button>
+                    <el-button type="primary" @click="updateEdit">确 定</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -139,6 +139,14 @@ export default {
             addGroup(this.form).then(() => {
               this.getData();
             })
+        },// 保存编辑
+        updateEdit() {
+            this.editVisible = false;
+            this.form.status = "0";
+            this.form.img = this.cropImg;
+            updateGroupStatus(this.form).then(() => {
+              this.getData();
+            })
         },
         handleDelete(index,row) {
           // 二次确认删除
@@ -168,6 +176,10 @@ export default {
             this.cropImg = event.target.result;
           };
           reader.readAsDataURL(file);
+        },
+        handleDialogClose(){
+          this.form = {};
+          this.editVisible = false;
         }
     }
 };

@@ -66,7 +66,7 @@
                 ></el-pagination>
             </div>
         </div>
-        <el-dialog title="新增" v-model="addVisible" width="30%">
+        <el-dialog title="新增" v-model="addVisible" width="30%" :before-close="handleDialogClose">
             <el-form ref="addForm" :model="form" label-width="120px">
               <el-form-item label="生成激活码数量">
                 <el-input v-model="form.num"></el-input>
@@ -184,6 +184,10 @@ export default {
                 document.body.removeChild(aLink); // 移除a标签
                 window.URL.revokeObjectURL(res); //释放掉blob对象
             }
+        },
+        handleDialogClose(){
+            this.form = {};
+            this.addVisible = false;
         }
     }
 };

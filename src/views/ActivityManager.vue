@@ -65,8 +65,8 @@
         </div>
 
         <!-- 新增弹出框 -->
-        <el-dialog title="编辑" v-model="addVisible" width="30%">
-            <el-form ref="addForm" :model="form" label-width="70px" :rules="rule">
+        <el-dialog title="新增" v-model="addVisible" width="80%" :before-close="handleDialogClose">
+            <el-form ref="addForm" :model="form" label-width="100px" :rules="rule">
               <el-form-item label="封面">
                 <div class="crop-demo">
                   <img :src="form.img" class="pre-img" />
@@ -85,11 +85,14 @@
               <el-form-item label="活动名称" prop="name">
                 <el-input v-model="form.name"></el-input>
               </el-form-item>
-              <el-form-item label="活动详情" prop="content">
-                <el-input type="textarea" v-model="form.content"></el-input>
+              <el-form-item label="活动介绍" prop="content">
+                <el-input type="textarea" v-model="form.title"></el-input>
               </el-form-item>
               <el-form-item label="活动地址" prop="address">
                 <el-input type="textarea" v-model="form.address"></el-input>
+              </el-form-item>
+              <el-form-item label="活动详情" prop="address">
+                <quill-editor ref="text" v-model="form.content" class="myQuillEditor" :options="editorOption" />
               </el-form-item>
               <el-form-item label="活动时间" prop="activeTime">
                 <el-date-picker
@@ -131,7 +134,7 @@
         </el-dialog>
 
       <!-- 编辑弹出框 -->
-      <el-dialog title="编辑" v-model="editVisible" width="30%">
+      <el-dialog title="编辑" v-model="editVisible" width="80%" :before-close="handleDialogClose">
         <el-form ref="editForm" :model="form" label-width="70px" :rules="rule">
           <el-form-item label="封面">
             <div class="crop-demo">
@@ -200,6 +203,7 @@
 
 <script>
 import { getActivityList, updateActivityStatus, addActivity } from "../api/ActivityManager";
+
 var currentVal = null;
 export default {
     name: "activity",
@@ -413,6 +417,11 @@ export default {
       },
       dateIfAddZero : function (time) {
         return time
+      },
+      handleDialogClose(){
+        this.form = {};
+        this.addVisible = false;
+        this.editVisible = false;
       }
     }
 };
@@ -444,6 +453,11 @@ export default {
 .mr10 {
     margin-right: 10px;
 }
+.ore-img {
+  width: 100px;
+  height: 142px;
+}
+
 .table-td-thumb {
     display: block;
     margin: auto;

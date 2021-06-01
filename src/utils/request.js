@@ -10,8 +10,8 @@ service.interceptors.request.use(
         if (localStorage.getItem("token")) {
             config.headers.Authorization = "Bearer " + localStorage.getItem("token");
         }
-        config.baseURL = 'http://127.0.0.1:8001/';
-        // config.baseURL = 'http://47.111.173.172:8001/';
+        // config.baseURL = 'http://127.0.0.1:8001/';
+        config.baseURL = 'http://47.111.173.172:8001/';
         return config;
         },
     error => {

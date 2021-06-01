@@ -56,7 +56,7 @@
                 <el-table-column prop="telphone" label="手机号"></el-table-column>
                 <el-table-column prop="birthday" label="出生日期"></el-table-column>
                 <el-table-column prop="remark" label="签名"></el-table-column>
-                <el-table-column prop="remark" label="兴趣小组"></el-table-column>
+                <el-table-column prop="" label="兴趣小组"></el-table-column>
                 <el-table-column label="状态" align="center">
                   <template #default="scope">
                     <el-tag

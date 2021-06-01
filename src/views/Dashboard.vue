@@ -1,82 +1,54 @@
 <template>
     <div>
-        <el-row :gutter="20">
-            <el-col :span="8">
-                <el-card shadow="hover" class="mgb20" style="height:252px;">
-                    <div class="user-info">
-                        <img src="../assets/img/img.jpg" class="user-avator" alt />
-                        <div class="user-info-cont">
-                            <div class="user-info-name">{{ name }}</div>
-                            <div>{{ role }}</div>
-                        </div>
-                    </div>
-<!--                    <div class="user-info-list">
-                        上次登录时间：
-                        <span>2019-11-01</span>&ndash;&gt;
-                    </div>
-                    <div class="user-info-list">
-                        上次登录地点：
-                        <span>东莞</span>&ndash;&gt;
-                    </div>-->
-                </el-card>
-<!--                <el-card shadow="hover" style="height:252px;">
-                    <template #header>
-                        <div class="clearfix">
-                            <span>语言详情</span>
-                        </div>
-                    </template>
-                    Vue
-                    <el-progress :percentage="71.3" color="#42b983"></el-progress>JavaScript
-                    <el-progress :percentage="24.1" color="#f1e05a"></el-progress>CSS
-                    <el-progress :percentage="13.7"></el-progress>HTML
-                    <el-progress :percentage="5.9" color="#f56c6c"></el-progress>
-                </el-card>-->
-            </el-col>
-            <el-col :span="16">
-<!--                <el-row :gutter="20" class="mgb20">-->
-<!--                    <el-col :span="8">
+        <el-row :gutter="20" style="height: 350px;">
+            <el-col :span="12">
+                <el-row>
+                    <el-col :span="24">
+                        <el-card shadow="hover" class="mgb20">
+                            <div class="user-info">
+                                <img src="../assets/img/img.jpg" class="user-avator" alt />
+                                <div class="user-info-cont">
+                                    <div class="user-info-name">{{ name }}</div>
+                                    <div>{{ role }}</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="12">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-1">
                                 <i class="el-icon-user-solid grid-con-icon"></i>
                                 <div class="grid-cont-right">
                                     <div class="grid-num">1234</div>
-                                    <div>用户访问量</div>
+                                    <div>新增用户数</div>
                                 </div>
                             </div>
                         </el-card>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="12">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-2">
                                 <i class="el-icon-message-solid grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">321</div>
-                                    <div>系统消息</div>
+                                    <div class="grid-num">1234</div>
+                                    <div>新增动态数</div>
                                 </div>
                             </div>
                         </el-card>
                     </el-col>
-                    <el-col :span="8">
-                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                            <div class="grid-content grid-con-3">
-                                <i class="el-icon-s-goods grid-con-icon"></i>
-                                <div class="grid-cont-right">
-                                    <div class="grid-num">5000</div>
-                                    <div>数量</div>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-col>-->
-<!--                </el-row>-->
+                </el-row>
+            </el-col>
+            <el-col :span="12">
                 <el-card shadow="hover" >
                    <template #header>
                         <div class="clearfix">
                             <span>通知公告</span>
                             <el-button style="float: right; padding: 3px 0" type="text" @click="addNotic">添加</el-button>
                         </div>
-                    </template>
-
-                    <el-table :data="noticList" style="width:100%;" ref="multipleTable"
+                   </template>
+                   <el-table :data="noticList" style="width:100%;height: 180px;" ref="multipleTable"
                               header-cell-class-name="table-header">
                         <el-table-column prop="index" label="序号"></el-table-column>
                         <el-table-column label="标题">
@@ -88,19 +60,29 @@
                         </el-table-column>
                         <el-table-column prop="createDate" :formatter ="createDateFormat" align="createDate" label="发布时间"></el-table-column>
                         <el-table-column label="操作">
-                          <template #default="scope">
-                            <el-button
-                                type="text"
-                                :class="scope.row.status === '0' ? 'green' : 'red'"
-                                @click="handleStatusChange(scope.$index, scope.row.status, scope.row.unid)"
-                            >{{ scope.row.status === '0' ? '下架' : scope.row.status === '1' ? '上架' : ''}}</el-button>
-                          </template>
+                            <template #default="scope">
+                                <el-button
+                                    type="text"
+                                    :class="scope.row.status === '0' ? 'green' : 'red'"
+                                    @click="handleStatusChange(scope.$index, scope.row.status, scope.row.unid)"
+                                >{{ scope.row.status === '0' ? '下架' : scope.row.status === '1' ? '上架' : ''}}</el-button>
+                            </template>
                         </el-table-column>
-                    </el-table>
+                   </el-table>
+                   <div class="pagination">
+                        <el-pagination
+                            background
+                            layout="total, prev, pager, next"
+                            :current-page="query.offset"
+                            :page-size="query.limit"
+                            :total="pageTotal"
+                            @current-change="handlePageChange"
+                        ></el-pagination>
+                   </div>
                 </el-card>
             </el-col>
         </el-row>
-<!--        <el-row :gutter="20">
+        <el-row :gutter="20">
             <el-col :span="12">
                 <el-card shadow="hover">
                     <schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
@@ -111,29 +93,29 @@
                     <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
                 </el-card>
             </el-col>
-        </el-row>-->
-      <!-- 新增弹出框 -->
-      <el-dialog title="新增" v-model="addVisible" width="30%">
-        <el-form ref="addForm" :model="form" label-width="80px" :rules="rule">
-          <el-form-item label="公告标题" prop="title">
-            <el-input v-model="form.title"></el-input>
-          </el-form-item>
-          <el-form-item label="公告内容" prop="content">
-            <el-input type="textarea" v-model="form.content"></el-input>
-          </el-form-item>
-        </el-form>
-        <template #footer>
+        </el-row>
+        <!-- 新增弹出框 -->
+        <el-dialog title="新增" v-model="addVisible" width="30%" :before-close="handleDialogClose">
+            <el-form ref="addForm" :model="form" label-width="80px" :rules="rule">
+                <el-form-item label="公告标题" prop="title">
+                    <el-input v-model="form.title"></el-input>
+                </el-form-item>
+                <el-form-item label="公告内容" prop="content">
+                    <el-input type="textarea" v-model="form.content"></el-input>
+                </el-form-item>
+            </el-form>
+            <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="addVisible = false">取 消</el-button>
                     <el-button type="primary" @click="saveEdit">确 定</el-button>
                 </span>
-        </template>
-      </el-dialog>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-/*import Schart from "vue-schart";*/
+import Schart from "vue-schart";
 import {getNoticList,updateNoticStatus,addNotic} from "../api/NoticManager";
 var currentVal = null;
 
@@ -145,7 +127,7 @@ export default {
             noticList: [
             ],
             query:{
-              offset: 1, limit: 10
+              offset: 1, limit: 2
             },
             updateQuery: {
               unid: "",
@@ -163,11 +145,54 @@ export default {
               content: [
                 {required: true, message: '请输入公告内容', trigger: 'blur'}
               ]
+            },
+            options: {
+                type: "bar",
+                title: {
+                    text: "用户活跃度"
+                },
+                xRorate: 25,
+                labels: ["周一", "周二", "周三", "周四", "周五"],
+                datasets: [
+                    {
+                      label: "家电",
+                      data: [234, 278, 270, 190, 230]
+                    },
+                    {
+                      label: "百货",
+                      data: [164, 178, 190, 135, 160]
+                    },
+                    {
+                      label: "食品",
+                      data: [144, 198, 150, 235, 120]
+                    }
+                ]
+            },
+            options2: {
+                type: "line",
+                title: {
+                    text: "激活码核销数"
+                },
+                labels: ["6月", "7月", "8月", "9月", "10月"],
+                datasets: [
+                    {
+                      label: "家电",
+                      data: [234, 278, 270, 190, 230]
+                    },
+                    {
+                      label: "百货",
+                      data: [164, 178, 150, 135, 160]
+                    },
+                    {
+                      label: "食品",
+                      data: [74, 118, 200, 235, 90]
+                    }
+                ]
             }
         };
     },
     components: {
-        /*Schart*/
+        Schart
     },
     computed: {
         role() {
@@ -176,12 +201,6 @@ export default {
     },
     methods: {
         changeDate() {
-            /*const now = new Date().getTime();
-            this.data.forEach((item, index) => {
-                const date = new Date(now - (6 - index) * 86400000);
-                item.name = `${date.getFullYear()}/${date.getMonth() +
-                    1}/${date.getDate()}`;
-            });*/
           getNoticList(this.query).then(res => {
             res.rows.forEach((item, index) => {
               item.index = index + 1;
@@ -189,7 +208,6 @@ export default {
             currentVal.noticList = res.rows; //将返回数据赋值给tableData = res.rows;
             this.pageTotal = res.total || 0;
             this.offset = res.offset || 1;
-            this.fullscreenLoading = false;
           });
         },
         createDateFormat(row) {
@@ -200,9 +218,6 @@ export default {
             let year = t.getFullYear()
             let month = this.dateIfAddZero(t.getMonth() + 1)
             let day = this.dateIfAddZero(t.getDate())
-            // let hours = this.dateIfAddZero(t.getHours())
-            // let minutes = this.dateIfAddZero(t.getMinutes())
-            // let seconds = this.dateIfAddZero(t.getSeconds())
             return year + '-' + month + '-' + day
         },
         dateIfAddZero : function (time) {
@@ -248,6 +263,15 @@ export default {
               return false;
             }
           })
+        },
+        // 分页导航
+        handlePageChange(val) {
+          this.query.pageIndex = val;
+          this.changeDate();
+        },
+        handleDialogClose(){
+          this.form = {};
+          this.addVisible = false;
         }
     },
     created() {
@@ -350,7 +374,7 @@ export default {
 }
 
 .mgb20 {
-    margin-bottom: 20px;
+    margin-bottom: 2px;
 }
 
 .todo-item {

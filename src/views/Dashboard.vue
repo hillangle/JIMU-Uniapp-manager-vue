@@ -103,6 +103,9 @@
                 <el-form-item label="公告内容" prop="content">
                     <el-input type="textarea" v-model="form.content"></el-input>
                 </el-form-item>
+                <el-form-item label="公告链接" prop="link">
+                    <el-input type="textarea" v-model="form.link"></el-input>
+                </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
@@ -136,7 +139,8 @@ export default {
             addVisible: false,
             form:{
               title:"",
-              content:""
+              content:"",
+              link:""
             },
             rule: {
               title: [
@@ -144,6 +148,9 @@ export default {
               ],
               content: [
                 {required: true, message: '请输入公告内容', trigger: 'blur'}
+              ],
+              link: [
+                {required: true, message: '请输入链接内容', trigger: 'blur'}
               ]
             },
             options: {

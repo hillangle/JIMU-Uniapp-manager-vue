@@ -21,7 +21,7 @@
                     </el-select>
                   </el-form-item>
                   <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-                  <el-button type="primary" icon="el-icon-search" @click="addVisible = true">新增</el-button>
+                  <el-button type="primary" icon="el-icon-edit" @click="addVisible = true">新增</el-button>
                   <el-button type="primary" icon="el-icon-search" @click="handleExport">导出</el-button>
                 </el-form>
             </div>

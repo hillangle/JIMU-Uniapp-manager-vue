@@ -10,7 +10,7 @@
         <div class="container">
             <div class="handle-box">
                 <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                  <el-button type="primary" icon="el-icon-search" @click="handleAdd">新增</el-button>
+                  <el-button type="primary" icon="el-icon-edit" @click="handleAdd">新增</el-button>
                 </el-form>
             </div>
             <el-table

@@ -12,7 +12,7 @@ export const updateGroupStatus = query => {
     return request({
         url: 'sys/group/updateGroup',
         method: 'post',
-        params: query
+        data: query
     });
 };
 
@@ -20,6 +20,6 @@ export const addGroup = query => {
     return request({
         url: 'sys/group/addGroup',
         method: 'post',
-        params: query
+        data: query
     });
 };

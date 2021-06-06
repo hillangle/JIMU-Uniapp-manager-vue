@@ -172,8 +172,10 @@ export default {
                 this.updateQuery.status = '0'
               }
               this.updateQuery.unid = unid;
-              updateTendencyStatus(this.updateQuery);
-              this.getData();
+              updateTendencyStatus(this.updateQuery).then(() => {
+                this.getData();
+              })
+
             })
             .catch(() => {});
         },
@@ -194,7 +196,7 @@ export default {
         },
         // 分页导航
         handlePageChange(val) {
-            this.$set(this.query, "pageIndex", val);
+            this.query.pageIndex = val;
             this.getData();
         }
     }

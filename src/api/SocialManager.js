@@ -12,7 +12,7 @@ export const updateSocialStatus = query => {
     return request({
         url: 'sys/social/updateSocial',
         method: 'post',
-        params: query
+        data: query
     });
 };
 
@@ -20,6 +20,6 @@ export const addSocial = query => {
     return request({
         url: 'sys/social/addSocial',
         method: 'post',
-        params: query
+        data: query
     });
 };

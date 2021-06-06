@@ -50,6 +50,36 @@
             </div>
         </div>
 
+        <!-- 新增弹出框 -->
+        <el-dialog title="新增" v-model="addVisible" width="30%" :before-close="handleDialogClose">
+            <el-form ref="form" :model="form" label-width="100px">
+                <el-form-item label="兴趣小组名称">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="兴趣小组图标">
+                    <div class="crop-demo">
+                        <img :src="cropImg" :class="preClass" />
+                        <div class="crop-demo-btn">
+                            选择图片
+                            <input
+                                class="crop-input"
+                                type="file"
+                                name="image"
+                                accept="image/*"
+                                @change="setImage"
+                            />
+                        </div>
+                    </div>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="handleDialogClose">取 消</el-button>
+                    <el-button type="primary" @click="saveEdit">确 定</el-button>
+                </span>
+            </template>
+        </el-dialog>
+
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" v-model="editVisible" width="30%" :before-close="handleDialogClose">
             <el-form ref="form" :model="form" label-width="100px">
@@ -74,7 +104,7 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="editVisible = false">取 消</el-button>
+                    <el-button @click="handleDialogClose">取 消</el-button>
                     <el-button type="primary" @click="updateEdit">确 定</el-button>
                 </span>
             </template>
@@ -92,12 +122,14 @@ export default {
           value: '',
           query: { status:"", offset: 1, limit: 10 },
           tableData: [],
+          addVisible: false,
           editVisible: false,
           pageTotal: 0,
           form: {name:"",status:"", img: ""},
           id: -1,
           updateQuery: { unid: "", status: "" },
-          cropImg: ""
+          cropImg: "",
+          preClass:""
         };
     },
     created() {
@@ -122,20 +154,21 @@ export default {
             this.getData();
         },
         handleAdd() {
-          this.editVisible = true;
+          this.addVisible = true;
         },
         // 编辑操作
         handleEdit(index, row) {
             this.idx = index;
             this.form = row;
-            this.value = row.relation;
+            this.cropImg = row.img;
             this.editVisible = true;
         },
         // 保存编辑
         saveEdit() {
-            this.editVisible = false;
+            this.addVisible = false;
             this.form.status = "0";
             this.form.img = this.cropImg;
+            this.form.img = this.form.img.replace("data:image/png;base64,", "");
             addGroup(this.form).then(() => {
               this.getData();
             })
@@ -144,6 +177,7 @@ export default {
             this.editVisible = false;
             this.form.status = "0";
             this.form.img = this.cropImg;
+            this.form.img = this.form.img.replace("data:image/png;base64,", "");
             updateGroupStatus(this.form).then(() => {
               this.getData();
             })
@@ -163,7 +197,7 @@ export default {
         },
         // 分页导航
         handlePageChange(val) {
-            this.$set(this.query, "pageIndex", val);
+            this.query.pageIndex = val;
             this.getData();
         },
         setImage(e) {
@@ -173,13 +207,16 @@ export default {
           }
           const reader = new FileReader();
             reader.onload = event => {
-            this.cropImg = event.target.result;
-          };
+              this.preClass = "pre-img";
+              this.cropImg = event.target.result;
+            };
           reader.readAsDataURL(file);
         },
         handleDialogClose(){
           this.form = {};
           this.editVisible = false;
+          this.addVisible = false;
+          this.cropImg = "";
         }
     }
 };
@@ -216,5 +253,35 @@ export default {
     margin: auto;
     width: 40px;
     height: 40px;
+}
+.crop-demo {
+  display: flex;
+  align-items: flex-end;
+}
+.crop-demo-btn {
+  position: relative;
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
+  margin-left: 30px;
+  background-color: #409eff;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.crop-input {
+  position: absolute;
+  width: 100px;
+  height: 40px;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.pre-img{
+  height: 100px;
+  width: 100px;
 }
 </style>

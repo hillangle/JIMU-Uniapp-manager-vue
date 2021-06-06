@@ -56,7 +56,7 @@
                 <el-table-column prop="telphone" label="手机号"></el-table-column>
                 <el-table-column prop="birthday" label="出生日期"></el-table-column>
                 <el-table-column prop="remark" label="签名"></el-table-column>
-                <el-table-column prop="" label="兴趣小组"></el-table-column>
+                <el-table-column prop="groupNames" label="兴趣小组"></el-table-column>
                 <el-table-column label="状态" align="center">
                   <template #default="scope">
                     <el-tag
@@ -132,9 +132,19 @@ export default {
     },
     methods: {
         getData() {
-          this.fullscreenLoading = true;
-          getUserList(this.query).then(res => {
+            this.fullscreenLoading = true;
+            getUserList(this.query).then(res => {
                 console.log(res);
+                res.rows.forEach((item) => {
+                    console.log(item.groups)
+                    item.groupNames = '';
+                    for(let i = 0; i < item.groups.length; i++){
+                        item.groupNames += item.groups[i].name;
+                        if(i < item.groups.length-1){
+                          item.groupNames += ",";
+                        }
+                    }
+                })
                 this.tableData = res.rows;
                 this.pageTotal = res.total || 0;
                 this.offset = res.offset || 1;
@@ -166,7 +176,7 @@ export default {
         },
         // 分页导航
         handlePageChange(val) {
-            this.$set(this.query, "pageIndex", val);
+            this.query.pageIndex = val;
             this.getData();
         }
     }

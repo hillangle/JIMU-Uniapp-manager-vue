@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const service = axios.create({
-    timeout: 5000
+    timeout: 30000
 });
 
 service.interceptors.request.use(
@@ -11,7 +11,7 @@ service.interceptors.request.use(
             config.headers.Authorization = "Bearer " + localStorage.getItem("token");
         }
         // config.baseURL = 'http://127.0.0.1:8001/';
-        config.baseURL = 'http://47.111.173.172:8001/';
+        config.baseURL = 'https://chat-api.jimdream.com/';
         return config;
         },
     error => {

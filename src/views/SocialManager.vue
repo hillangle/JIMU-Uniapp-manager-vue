@@ -71,7 +71,7 @@
                 </el-form-item>
                 <el-form-item label="平台图标">
                   <div class="crop-demo">
-                    <img :src="cropImg" class="pre-img" />
+                    <img :src="cropImg" :class="preClass" />
                     <div class="crop-demo-btn">
                       选择图片
                       <input
@@ -97,7 +97,7 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="addVisible = false">取 消</el-button>
+                    <el-button @click="handleDialogClose">取 消</el-button>
                     <el-button type="primary" @click="saveEdit">确 定</el-button>
                 </span>
             </template>
@@ -137,7 +137,7 @@
         </el-form>
         <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="editVisible = false">取 消</el-button>
+                    <el-button @click="handleDialogClose">取 消</el-button>
                     <el-button type="primary" @click="updateEdit">确 定</el-button>
                 </span>
         </template>
@@ -167,7 +167,8 @@ export default {
             id: -1,
             updateQuery: { unid: "", status: "" },
             fileList: [],
-            cropImg: ""
+            cropImg: "",
+            preClass:""
         };
     },
     created() {
@@ -185,7 +186,7 @@ export default {
             getSocialList(this.query).then(res => {
                 res.rows.forEach((item,index)=>{
                   item.index = index +1;
-                  item.img = Base64.decode(item.img);
+                  item.img = Base64.decode(item.img).indexOf('data:image/png;base64,') == -1 ? 'data:image/png;base64,' + item.img : Base64.decode(item.img);
                 })
                 currentVal.tableData = res.rows; //将返回数据赋值给tableData = res.rows;
                 this.pageTotal = res.total || 0;
@@ -230,6 +231,7 @@ export default {
             console.log(this.form);
             this.form.status = '0';
             this.form.img = this.cropImg;
+            this.form.img = this.form.img.replace("data:image/png;base64,", "");
             addSocial(this.form).then(() => {
               this.getData();
             })
@@ -241,6 +243,7 @@ export default {
           console.log(this.form);
           this.form.status = '0';
           this.form.img = this.cropImg;
+          this.form.img = this.form.img.replace("data:image/png;base64,", "");
           updateSocialStatus(this.form).then(() => {
             this.getData();
           })
@@ -260,7 +263,7 @@ export default {
         },
         // 分页导航
         handlePageChange(val) {
-            this.$set(this.query, "pageIndex", val);
+            this.query.pageIndex = val;
             this.getData();
         },
         setImage(e) {
@@ -270,6 +273,7 @@ export default {
           }
           const reader = new FileReader();
           reader.onload = event => {
+            this.preClass = "pre-img";
             this.cropImg = event.target.result;
           };
           reader.readAsDataURL(file);
@@ -278,6 +282,7 @@ export default {
           this.form = {};
           this.addVisible = false;
           this.editVisible = false;
+          this.cropImg = "";
         }
     }
 };
@@ -340,5 +345,9 @@ export default {
   top: 0;
   opacity: 0;
   cursor: pointer;
+}
+.pre-img{
+  height: 100px;
+  width: 100px;
 }
 </style>

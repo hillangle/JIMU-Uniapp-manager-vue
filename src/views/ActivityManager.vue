@@ -67,7 +67,7 @@
         <!-- 新增弹出框 -->
         <el-dialog title="新增" v-model="addVisible" width="80%" :before-close="handleDialogClose">
             <el-form ref="addForm" :model="form" label-width="100px" :rules="rule">
-              <el-form-item label="封面">
+              <el-form-item label="封面" prop="img">
                 <div class="crop-demo">
                   <img :src="form.img" class="pre-img" />
                   <div class="crop-demo-btn">
@@ -211,6 +211,9 @@ export default {
         return {
             fullscreenLoading: false,
             rule: {
+              img:[
+                {required: true, message: '请上传活动封面', trigger: 'blur' }
+              ],
               name:[
                 {required: true, message: '请输入活动名称', trigger: 'blur' }
               ],
@@ -313,8 +316,9 @@ export default {
             addActivity(this.form).then(() => {
               this.getData();
               this.form = {};
+              this.preClass = "";
             })
-            this.$refs.addForm.resetFields();
+            this.form = null;
           }else{
             this.$message.error("请检查填写内容");
             return false;
@@ -335,7 +339,8 @@ export default {
               this.getData();
               this.form = {};
             })
-            this.$refs.editForm.resetFields();
+            this.form = {};
+            this.preClass = "";
           } else {
             this.$message.error("请检查填写内容");
             return false;

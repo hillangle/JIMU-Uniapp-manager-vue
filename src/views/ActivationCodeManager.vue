@@ -85,7 +85,7 @@
 <script>
 import { getActivationCodeList, addActivationCode, exportActivationCode } from "../api/ActivationCodeManager";
 export default {
-    name: "user",
+    name: "activationCode",
     data() {
         return {
             fullscreenLoading: false,
@@ -145,20 +145,20 @@ export default {
                activationCodes += this.unids[i] + ','
             }
             exportActivationCode({"unids":activationCodes}).then(res => {
+                this.getData();
                 this.binaryDownload(res);
             })
         },
         // 分页导航
         handlePageChange(val) {
-            this.$set(this.query, "pageIndex", val);
-            this.getData();
+          this.query.pageIndex = val;
+          this.getData();
         },
         handleSelectionChange(val) {
             this.unids = []
             for(let i = 0; i < val.length; i++){
                 this.unids.push(val[i].unid)
             }
-
         },
         binaryDownload(res){
            // let contentDisposition = res.headers['content-disposition']; // 从Response Headers中获取content-disposition的值, 后端response.setHeader("Content-disposition", "attachment; filename=xxxx.docx") 设置的文件名;

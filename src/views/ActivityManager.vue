@@ -69,7 +69,7 @@
             <el-form ref="addForm" :model="form" label-width="100px" :rules="rule">
               <el-form-item label="封面" prop="img">
                 <div class="crop-demo">
-                  <img :src="form.img" class="pre-img" />
+                  <img :src="form.img" :class="preClass" />
                   <div class="crop-demo-btn">
                     选择图片
                     <input
@@ -86,14 +86,14 @@
                 <el-input v-model="form.name"></el-input>
               </el-form-item>
               <el-form-item label="活动介绍" prop="content">
-                <el-input type="textarea" v-model="form.title"></el-input>
+                <el-input type="textarea" v-model="form.content"></el-input>
               </el-form-item>
               <el-form-item label="活动地址" prop="address">
                 <el-input type="textarea" v-model="form.address"></el-input>
               </el-form-item>
-              <el-form-item label="活动详情" prop="address">
+<!--              <el-form-item label="活动详情" prop="address">
                 <quill-editor ref="text" v-model="form.content" class="myQuillEditor" :options="editorOption" />
-              </el-form-item>
+              </el-form-item>-->
               <el-form-item label="活动时间" prop="activeTime">
                 <el-date-picker
                     v-model="form.activeTime"
@@ -263,7 +263,8 @@ export default {
                   date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
                   picker.$emit('pick', date);
                 }
-              }]
+              }],
+              preClass:""
             }
         }
     },
@@ -314,6 +315,7 @@ export default {
             this.form.endTime = this.rTime(this.form.endTime);
             this.form.img = this.form.img.replace("data:image/png;base64,", "");
             addActivity(this.form).then(() => {
+              currentVal.tableData = [];
               this.getData();
               this.form = {};
               this.preClass = "";
@@ -363,7 +365,7 @@ export default {
       },
       // 分页导航
       handlePageChange(val) {
-        this.$set(this.query, "pageIndex", val);
+        this.query.pageIndex = val;
         this.getData();
       },
       setImage(e) {
@@ -373,6 +375,7 @@ export default {
         }
         const reader = new FileReader();
         reader.onload = event => {
+          this.preClass = "pre-img";
           this.form.img = event.target.result;
         };
         reader.readAsDataURL(file);
@@ -494,5 +497,9 @@ export default {
   top: 0;
   opacity: 0;
   cursor: pointer;
+}
+.pre-img{
+  height: 100px;
+  width: 100px;
 }
 </style>

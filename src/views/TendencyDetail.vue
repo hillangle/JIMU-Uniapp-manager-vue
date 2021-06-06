@@ -96,7 +96,7 @@ export default {
           getTendencyInfo(this.query).then(res => {
             console.log(res.rows[0])
             this.createDate = res.rows[0].createDate;
-            this.userImg = res.rows[0].user.userPhotos[0].attaPath;
+            this.userImg = res.rows[0].user.userPhotos[0] == undefined ? '': res.rows[0].user.userPhotos[0].attaPath;
             this.userName = res.rows[0].user.userName;
             this.telphone = res.rows[0].user.telphone;
             this.content = res.rows[0].content;
@@ -105,7 +105,7 @@ export default {
             }
             for(let j = 0; j < res.rows[0].discusses.length; j++){
               this.comments.push({
-                commentUserImg:res.rows[0].discusses[j].user.userPhotos[0].attaPath,
+                commentUserImg:res.rows[0].discusses[j].user.userPhotos[0] == undefined ? '' : res.rows[0].discusses[j].user.userPhotos[0].attaPath,
                 commentContent:res.rows[0].discusses[j].content,
                 commentCreateDate:res.rows[0].discusses[j].createDate
               })

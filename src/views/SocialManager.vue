@@ -233,6 +233,7 @@ export default {
             this.form.img = this.cropImg;
             this.form.img = this.form.img.replace("data:image/png;base64,", "");
             addSocial(this.form).then(() => {
+              this.form = {};
               this.getData();
             })
             this.$refs.addForm.resetFields();
@@ -245,6 +246,7 @@ export default {
           this.form.img = this.cropImg;
           this.form.img = this.form.img.replace("data:image/png;base64,", "");
           updateSocialStatus(this.form).then(() => {
+            this.form = {};
             this.getData();
           })
         },
